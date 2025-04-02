@@ -64,7 +64,7 @@ func NewWenOnceAction() cli.ActionFunc {
 				// 按照微调脚本进行处理
 				prompt := promptui.Select{
 					Label: i18n.Dtr("selectOperation"),
-					Items: []string{i18n.Dtr("adjustAndRun"), i18n.Dtr("exit")},
+					Items: []string{i18n.Dtr("exit")},
 				}
 				_, result, err := prompt.Run()
 

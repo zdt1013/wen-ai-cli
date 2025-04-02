@@ -1,12 +1,14 @@
 package wenai
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"regexp"
 	"strings"
 	"wen-ai-cli/common"
 	"wen-ai-cli/model"
+	"wen-ai-cli/setup"
 
 	"github.com/cloudwego/eino/schema"
 
@@ -18,11 +20,11 @@ func ReportStream(sr *schema.StreamReader[*schema.Message]) (*schema.Message, *m
 
 	// 创建使用自定义内容颜色的打印器
 	printer := common.NewStreamPrinterWithColors(
-		"╭──",                        // 顶部边框
-		"│",                          // 普通行边框
-		"│──",                        // 标题行边框
-		"╰──",                        // 底部边框
-		"WenAI",                      // 头部文本
+		"╭──", // 顶部边框
+		"│",   // 普通行边框
+		"│──", // 标题行边框
+		"╰──", // 底部边框
+		fmt.Sprintf("%s - %s", setup.CliName, setup.CliVersion), // 头部文本
 		"End",                        // 底部文本
 		color.New(color.FgHiCyan),    // 顶部边框颜色
 		color.New(color.FgHiCyan),    // 普通行边框颜色

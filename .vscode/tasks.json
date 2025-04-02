@@ -1,0 +1,53 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "go",
+			"label": "go: build linux-amd64",
+			"command": "build",
+			"options": {
+				"env": {
+					"GOOS": "linux",
+					"GOARCH": "amd64"
+				}
+			},
+			"args": [
+				"-ldflags",
+				"-s -w -X main.Version=v0.0.1",
+				"--trimpath",
+				"-o",
+				"wen",
+				"."
+			],
+			"problemMatcher": [
+				"$go"
+			],
+			"group": "build",
+			"detail": "Build linux-amd64 binary"
+		},
+		{
+			"type": "go",
+			"label": "go: build windows-amd64",
+			"command": "build",
+			"options": {
+				"env": {
+					"GOOS": "windows",
+					"GOARCH": "amd64"
+				}
+			},
+			"args": [
+				"-ldflags",
+				"-s -w -X main.Version=v0.0.1",
+				"--trimpath",
+				"-o",
+				"wen.exe",
+				"."
+			],
+			"problemMatcher": [
+				"$go"
+			],
+			"group": "build",
+			"detail": "Build windows-amd64 binary"
+		}
+	]
+}
