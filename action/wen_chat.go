@@ -56,27 +56,10 @@ func NewWenChatAction() cli.ActionFunc {
 		for {
 			question_times++
 			// 创建使用自定义内容颜色的打印器
-			var printer = common.NewStreamPrinterWithColors(
-				"╭──",                        // 顶部边框
-				"│",                          // 普通行边框
-				"│──",                        // 标题行边框
-				"╰──",                        // 底部边框
-				i18n.Dtr("userInput"),        // 头部文本
-				"End",                        // 底部文本
-				color.New(color.FgHiCyan),    // 顶部边框颜色
-				color.New(color.FgHiCyan),    // 普通行边框颜色
-				color.New(color.FgHiCyan),    // 标题行边框颜色
-				color.New(color.FgHiCyan),    // 底部边框颜色
-				color.New(color.FgHiMagenta), // 头部文本颜色 - 亮紫色
-				color.New(color.FgHiMagenta), // 底部文本颜色 - 亮紫色
-				color.New(color.FgHiGreen),   // 标题文本颜色 - 亮绿色
-				color.New(color.FgHiYellow),  // 有序列表颜色 - 亮紫色
-				color.New(color.FgHiYellow),  // 无序列表颜色 - 亮黄色
-				color.New(color.FgHiBlue),    // 代码块颜色 - 亮蓝色
-			)
-			printer.ProcessFragment("## 第 " + strconv.Itoa(question_times) + " 次对话\n")
-			printer.ProcessFragment(question)
-			printer.ProcessFragment("\n")
+			var printer = common.NewStreamPrinterWithAllOptions(false, true, i18n.Dtr("userInput"), setup.CliVersion)
+			printer.Print("## 第 " + strconv.Itoa(question_times) + " 次对话\n")
+			printer.Print(question)
+			printer.Print("\n")
 			printer.Flush()
 			// 创建聊天消息模板
 

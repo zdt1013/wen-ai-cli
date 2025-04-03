@@ -1,7 +1,6 @@
 package wenai
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"regexp"
@@ -11,32 +10,13 @@ import (
 	"wen-ai-cli/setup"
 
 	"github.com/cloudwego/eino/schema"
-
-	"github.com/fatih/color"
 )
 
 func ReportStream(sr *schema.StreamReader[*schema.Message]) (*schema.Message, *model.HiddenParams, error) {
 	defer sr.Close()
 
 	// 创建使用自定义内容颜色的打印器
-	printer := common.NewStreamPrinterWithColors(
-		"╭──", // 顶部边框
-		"│",   // 普通行边框
-		"│──", // 标题行边框
-		"╰──", // 底部边框
-		fmt.Sprintf("%s - %s", setup.CliName, setup.CliVersion), // 头部文本
-		"End",                        // 底部文本
-		color.New(color.FgHiCyan),    // 顶部边框颜色
-		color.New(color.FgHiCyan),    // 普通行边框颜色
-		color.New(color.FgHiCyan),    // 标题行边框颜色
-		color.New(color.FgHiCyan),    // 底部边框颜色
-		color.New(color.FgHiMagenta), // 头部文本颜色 - 亮紫色
-		color.New(color.FgHiMagenta), // 底部文本颜色 - 亮紫色
-		color.New(color.FgHiGreen),   // 标题文本颜色 - 亮绿色
-		color.New(color.FgHiYellow),  // 有序列表颜色 - 亮紫色
-		color.New(color.FgHiYellow),  // 无序列表颜色 - 亮黄色
-		color.New(color.FgHiBlue),    // 代码块颜色 - 亮蓝色
-	)
+	printer := common.NewStreamPrinterWithAllOptions(false, true, setup.CliName, setup.CliVersion)
 
 	i := 0
 	result := &model.HiddenParams{}
@@ -46,7 +26,7 @@ func ReportStream(sr *schema.StreamReader[*schema.Message]) (*schema.Message, *m
 		message, err := sr.Recv()
 		if err == io.EOF {
 			// 处理最后一段
-			printer.ProcessFragment("\n")
+			printer.Print("\n")
 			printer.Flush()
 
 			// 移动正则解析代码到这里
@@ -81,7 +61,7 @@ func ReportStream(sr *schema.StreamReader[*schema.Message]) (*schema.Message, *m
 		}
 		content := message.Content
 		fullContentBuilder.WriteString(content)
-		printer.ProcessFragment(content)
+		printer.Print(content)
 		i++
 	}
 }
