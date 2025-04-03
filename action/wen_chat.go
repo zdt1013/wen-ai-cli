@@ -13,7 +13,6 @@ import (
 	"wen-ai-cli/wenai"
 
 	"github.com/cloudwego/eino/schema"
-	"github.com/fatih/color"
 	"github.com/gookit/i18n"
 	"github.com/manifoldco/promptui"
 	"github.com/urfave/cli/v3"
@@ -75,11 +74,13 @@ func NewWenChatAction() cli.ActionFunc {
 				logger.Errorf("ReportStream failed %v", err)
 			}
 
-			// 打印分隔线
-			cyan := color.New(color.FgCyan)
-			cyan.Println("-------------- 输入提示 ------------------")
-			gray := color.New(color.FgHiBlack)
-			gray.Println("1. q/quit->退出\n2. f/finish->完成对话\n3. 任意内容->继续对话")
+			// 打印帮助信息
+			var helpPrinter = common.NewStreamPrinterWithAllOptions(false, true, i18n.Dtr("chatHelp"), setup.CliVersion)
+			helpPrinter.Print("1. q/quit->退出\n")
+			helpPrinter.Print("2. f/finish->完成对话\n")
+			helpPrinter.Print("3. 任意内容->继续对话\n")
+			helpPrinter.Flush()
+
 			// 定义输入验证函数
 			validateFn := func(input string) error {
 				return validate.ValidateParam(input, "string")
@@ -93,6 +94,7 @@ func NewWenChatAction() cli.ActionFunc {
 			}
 			// 获取用户输入
 			input_quetion, err := prompt.Run()
+			helpPrinter.Clear0()
 
 			if err != nil {
 				logger.Errorf("Prompt failed %v", err)

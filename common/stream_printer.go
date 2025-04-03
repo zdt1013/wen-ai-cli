@@ -16,6 +16,11 @@ type StreamPrinter struct {
 	showHashTag bool   // 是否显示标题的#符号
 	colorCode   bool   // 是否对代码块内容着色
 
+	// 跟踪打印的位置
+	printStartLine int  // 打印开始的行数
+	printLineCount int  // 打印的总行数
+	hasPrinted     bool // 是否已经打印过内容
+
 	// 内容颜色
 	titleColor       *color.Color // 标题颜色
 	listColor        *color.Color // 列表标记颜色
@@ -48,6 +53,11 @@ func NewStreamPrinter() *StreamPrinter {
 		firstPrint:  true,
 		showHashTag: true, // 默认显示标题的#符号
 		colorCode:   true, // 默认对代码块内容着色
+
+		// 初始化位置跟踪
+		printStartLine: 0,
+		printLineCount: 0,
+		hasPrinted:     false,
 
 		// 内容颜色
 		titleColor:       color.New(color.FgBlue),    // 标题使用蓝色
@@ -166,10 +176,19 @@ func NewStreamPrinterWithBorder(
 
 // 打印头部
 func (sp *StreamPrinter) printHeader() {
+	// 如果是首次打印，记录起始行
+	if !sp.hasPrinted {
+		// 记录打印开始位置（假设当前光标位置是打印开始位置）
+		sp.hasPrinted = true
+	}
+
 	sp.headerColor.Print(sp.headerChar)
 	sp.headerTextColor.Print(" " + sp.headerText)
 	fmt.Println()
 	sp.firstPrint = false
+
+	// 头部算一行
+	sp.printLineCount++
 }
 
 // 打印尾部
@@ -177,6 +196,8 @@ func (sp *StreamPrinter) printFooter() {
 	sp.footerColor.Print(sp.footerChar)
 	sp.footerTextColor.Print(" " + sp.footerText)
 	fmt.Println()
+	// 尾部打印算一行
+	sp.printLineCount++
 }
 
 // Print 接收一段文本并处理打印
@@ -204,6 +225,8 @@ func (sp *StreamPrinter) Print(text string) {
 		// 打印这一行（包括边框）
 		sp.printLineWithBorder(completeLine)
 		fmt.Println() // 打印换行符
+		// 每打印一行计数加一
+		sp.printLineCount++
 
 		// 更新缓冲区，移除已处理的行（包括换行符）
 		sp.buffer = sp.buffer[newlineIndex+1:]
@@ -220,11 +243,71 @@ func (sp *StreamPrinter) Flush() {
 	if sp.buffer != "" {
 		sp.printLineWithBorder(sp.buffer)
 		fmt.Println()
+		// 计数加一
+		sp.printLineCount++
 		sp.buffer = ""
 	}
 
 	// 打印尾部
 	sp.printFooter()
+}
+
+func (sp *StreamPrinter) Clear() {
+	sp.clearOrClearAndPrint(false)
+}
+
+// Clear 清除之前打印的所有内容
+func (sp *StreamPrinter) clearOrClearAndPrint(clearAndPrint bool) {
+	if !sp.hasPrinted || sp.printLineCount == 0 {
+		return // 没有打印过内容，不需要清除
+	}
+
+	// 记录当前行数，用于后面的操作
+	var lines int
+	if clearAndPrint {
+		lines = sp.printLineCount
+	} else {
+		lines = sp.printLineCount + 1
+	}
+
+	// 方法1：使用\r覆盖每一行的内容
+	// 先回到最上面一行（向上移动lines行）
+	fmt.Printf("\033[%dA", lines)
+
+	// 逐行清除内容
+	for i := 0; i < lines; i++ {
+		// \r 回到行首，然后打印空格覆盖整行内容
+		fmt.Print("\r")
+		// 使用 ESC[K 序列擦除从光标到行尾的内容（这在大多数终端都有效）
+		fmt.Print("\033[K")
+
+		// 如果不是最后一行，则向下移动一行
+		if i < lines-1 {
+			fmt.Print("\033[1B")
+		}
+	}
+
+	// 再次回到顶部，准备打印新内容
+	if lines > 1 {
+		fmt.Printf("\033[%dA", lines-1)
+	}
+
+	// 重置状态
+	sp.buffer = ""
+	sp.inCodeBlock = false
+	sp.firstPrint = true
+	sp.printLineCount = 0
+	sp.hasPrinted = false
+}
+
+// ClearAndPrint 清除之前的内容并打印新内容
+func (sp *StreamPrinter) ClearAndPrint(text string) {
+	sp.clearOrClearAndPrint(true)
+	sp.Print(text)
+}
+
+func (sp *StreamPrinter) Clear0() {
+	sp.clearOrClearAndPrint(true)
 }
 
 // 处理并打印带边框的单行文本
