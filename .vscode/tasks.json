@@ -13,7 +13,7 @@
 			},
 			"args": [
 				"-ldflags",
-				"-s -w -X main.Version=v0.0.1",
+				"-s -w -X wen-ai-cli/setup.CliVersion=v0.1.2",
 				"--trimpath",
 				"-o",
 				"wen",
@@ -37,7 +37,7 @@
 			},
 			"args": [
 				"-ldflags",
-				"-s -w -X main.Version=v0.0.1",
+				"-s -w -X wen-ai-cli/setup.CliVersion=v0.1.2",
 				"--trimpath",
 				"-o",
 				"wen.exe",
