@@ -1,7 +1,7 @@
 package setup
 
+var CliVersion = "v0.0.0" // 改为变量声明，编译时会自动替换
 const (
-	CliVersion     = "v0.0.1"
 	CliName        = "Wen AI"
 	ConfigCmd      = "config"
 	ConfigCmdAlias = "c"

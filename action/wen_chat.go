@@ -9,6 +9,7 @@ import (
 	"wen-ai-cli/logger"
 	"wen-ai-cli/setup"
 	"wen-ai-cli/validate"
+
 	"wen-ai-cli/wenai"
 
 	"github.com/cloudwego/eino/schema"
