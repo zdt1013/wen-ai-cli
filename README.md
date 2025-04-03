@@ -70,15 +70,19 @@ wen config set api-key YOUR_API_KEY
 ```
 wen-ai-cli/
 ├── action/     # 命令动作实现
+├── assets/     # 静态资源
+│   └── lang/   # 多语言包
 ├── cmd/        # 命令行定义
 ├── common/     # 公共组件
-├── conf/       # 配置文件
 ├── execute/    # 执行器
 ├── logger/     # 日志模块
 ├── model/      # 数据模型
 ├── setup/      # 初始化设置
 ├── validate/   # 验证器
-└── wenai/      # 核心功能实现
+├── wenai/      # 核心功能实现
+├── main.go     # 程序入口
+├── go.mod      # Go模块定义
+└── go.sum      # Go模块依赖校验
 ```
 
 ## 已知问题
