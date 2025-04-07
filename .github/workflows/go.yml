@@ -66,6 +66,7 @@ jobs:
       env:
         GOOS: ${{ matrix.goos }}
         GOARCH: ${{ matrix.goarch }}
+        ARCHIVE_TYPE: ${{ matrix.archive }}
       run: |
         cd bin
         output="wen-ai-cli${{ matrix.suffix}}"
@@ -74,14 +75,14 @@ jobs:
           echo "Error: Binary file $output not found!"
           exit 1
         fi
-        case ${{ matrix.archive }} in
-          tar.gz)
-            tar -czvf ../${artifact_name}.tar.gz $output
-            ;;
-          zip)
-            zip -r ../${artifact_name}.zip $output
-            ;;
-        esac
+        if [ "$ARCHIVE_TYPE" = "tar.gz" ]; then
+          tar -czvf ../${artifact_name}.tar.gz $output
+        elif [ "$ARCHIVE_TYPE" = "zip" ]; then
+          zip -r ../${artifact_name}.zip $output
+        else
+          echo "Error: Unknown archive type: $ARCHIVE_TYPE"
+          exit 1
+        fi
         # 列出当前目录下的文件，用于调试
         ls -la
         # 列出上级目录下的文件，用于调试
