@@ -14,7 +14,7 @@ import (
 
 var systemMessage = `{baseInfo}
 
-{workUserAndPwd}
+{workUserAndDir}
 
 {workPlatform}
 
@@ -46,7 +46,7 @@ var workFlowSteps = []struct {
 	Default bool
 }{
 	{
-		Step:    "根据提供的目标用户信息、工作目录，判断是否需要使用sudo执行命令、是否需要添加当前工作目录路径，智能的在回答中调整脚本",
+		Step:    "根据提供的目标用户信息、工作目录，判断是否需要使用sudo执行命令、是否需要添加当前工作目录路径，智能的在回答中调整脚本（比如root用户，是不需要在回答的命令中添加sudo，而非root用户则需要添加sudo）",
 		Enable:  true,
 		Default: true,
 	},
@@ -193,7 +193,7 @@ func CreateOnceMessagesFromTemplate(question string, enableExplain bool, enableE
 		"baseInfo":          baseInfo,
 		"workFlow":          getWorkFlow(enablePlatformPerception, enableWorkUserAndDir),
 		"workPlatform":      getWorkPlatform(enablePlatformPerception),
-		"workUserAndPwd":    getWorkUserAndDir(enableWorkUserAndDir),
+		"workUserAndDir":    getWorkUserAndDir(enableWorkUserAndDir),
 		"answerDescription": answerDescription,
 		"answerFormat":      getAnswerFormat(enableExplain, enableExtendParams),
 		"question":          question,
@@ -214,7 +214,7 @@ func CreateMoreMessagesFromTemplate(question string, chatHistory []*schema.Messa
 		"baseInfo":          baseInfo,
 		"workFlow":          getWorkFlow(enablePlatformPerception, enableWorkUserAndDir),
 		"workPlatform":      getWorkPlatform(enablePlatformPerception),
-		"workUserAndPwd":    getWorkUserAndDir(enableWorkUserAndDir),
+		"workUserAndDir":    getWorkUserAndDir(enableWorkUserAndDir),
 		"answerDescription": answerDescription,
 		"answerFormat":      getAnswerFormat(enableExplain, enableExtendParams),
 		"question":          question,
