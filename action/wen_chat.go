@@ -44,7 +44,7 @@ func NewWenChatAction() cli.ActionFunc {
 			execute.PrintQuestionTimes(question, questionTimes)
 			// 创建聊天消息模板
 
-			messages := wenai.CreateMoreMessagesFromTemplate(question, chatHistory, answerConfig.EnableExplain, answerConfig.EnableExtendParams, answerConfig.EnablePlatformPerception)
+			messages := wenai.CreateMoreMessagesFromTemplate(question, chatHistory, answerConfig.EnableExplain, answerConfig.EnableExtendParams, answerConfig.EnablePlatformPerception, answerConfig.EnableWorkUserAndDir)
 			// 创建OpenAI聊天模型
 			cm := wenai.CreateOpenAIChatModel(ctx)
 			// 获取流式处理结果

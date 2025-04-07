@@ -70,6 +70,7 @@ func createDefaultConfig(configFilePath string) error {
 			EnableExplain:            true,
 			EnableExtendParams:       true,
 			EnablePlatformPerception: true,
+			EnableWorkUserAndDir:     true,
 		},
 	}
 	jsonData, err := json.Marshal(emptyCfg)

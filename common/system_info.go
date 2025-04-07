@@ -3,6 +3,7 @@ package common
 import (
 	"fmt"
 	"os"
+	"os/user"
 	"path/filepath"
 	"strings"
 
@@ -55,4 +56,20 @@ func GetShellPlatform() (string, error) {
 	default:
 		return name, nil
 	}
+}
+
+func GetUser() (string, error) {
+	user, err := user.Current()
+	if err != nil {
+		return "", err
+	}
+	return user.Username, nil
+}
+
+func GetPwd() (string, error) {
+	pwd, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+	return pwd, nil
 }

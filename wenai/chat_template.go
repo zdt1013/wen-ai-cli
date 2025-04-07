@@ -15,6 +15,8 @@ var systemMessage = `{baseInfo}
 
 {workPlatform}
 
+{workUserAndPwd}
+
 {workFlow}
 
 {answerDescription}
@@ -34,6 +36,8 @@ var baseInfo = `- 角色：命令行界面（CLI）专家和系统命令生成�
 - 约束: 生成的命令应准确无误，符合目标系统和Shell工具的语法规范，说明应清晰易懂，适合不同技术水平的用户。`
 
 var workPlatform = `-> 目标系统信息：操作系统是“{systemInfo}”，命令行工具是“{shellPlatform}”`
+
+var workUserAndDir = `-> 当前用户是“{workUser}”，当前用户所在目录是“{workDir}”`
 
 var workFlow = `- 工作流程:
   1. 确认用户提供的当前运行环境（命令行工具和操作系统）。
@@ -121,13 +125,31 @@ func getWorkPlatform(enablePlatformPerception bool) string {
 	return workPlatform
 }
 
-func CreateOnceMessagesFromTemplate(question string, enableExplain bool, enableExtendParams bool, enablePlatformPerception bool) []*schema.Message {
+func getWorkUserAndDir(enableWorkUserAndDir bool) string {
+	if !enableWorkUserAndDir {
+		return ""
+	}
+	user, err := common.GetUser()
+	if err != nil {
+		logger.Errorf("get user failed: %v\n", err)
+	}
+	pwd, err := common.GetPwd()
+	if err != nil {
+		logger.Errorf("get pwd failed: %v\n", err)
+	}
+	workUserAndDir = strings.Replace(workUserAndDir, "{workUser}", user, -1)
+	workUserAndDir = strings.Replace(workUserAndDir, "{workDir}", pwd, -1)
+	return workUserAndDir
+}
+
+func CreateOnceMessagesFromTemplate(question string, enableExplain bool, enableExtendParams bool, enablePlatformPerception bool, enableWorkUserAndDir bool) []*schema.Message {
 	template := createTemplate()
 	// 使用模板生成消息
 	messages, err := template.Format(context.Background(), map[string]any{
 		"baseInfo":          baseInfo,
 		"workFlow":          workFlow,
 		"workPlatform":      getWorkPlatform(enablePlatformPerception),
+		"workUserAndPwd":    getWorkUserAndDir(enableWorkUserAndDir),
 		"answerDescription": answerDescription,
 		"answerFormat":      getAnswerFormat(enableExplain, enableExtendParams),
 		"question":          question,
@@ -137,16 +159,18 @@ func CreateOnceMessagesFromTemplate(question string, enableExplain bool, enableE
 	if err != nil {
 		log.Fatalf("format template failed: %v\n", err)
 	}
+	logger.Debugf("messages: %v\n", messages)
 	return messages
 }
 
-func CreateMoreMessagesFromTemplate(question string, chatHistory []*schema.Message, enableExplain bool, enableExtendParams bool, enablePlatformPerception bool) []*schema.Message {
+func CreateMoreMessagesFromTemplate(question string, chatHistory []*schema.Message, enableExplain bool, enableExtendParams bool, enablePlatformPerception bool, enableWorkUserAndDir bool) []*schema.Message {
 	template := createTemplate()
 	// 使用模板生成消息
 	messages, err := template.Format(context.Background(), map[string]any{
 		"baseInfo":          baseInfo,
 		"workFlow":          workFlow,
 		"workPlatform":      getWorkPlatform(enablePlatformPerception),
+		"workUserAndPwd":    getWorkUserAndDir(enableWorkUserAndDir),
 		"answerDescription": answerDescription,
 		"answerFormat":      getAnswerFormat(enableExplain, enableExtendParams),
 		"question":          question,
@@ -156,5 +180,6 @@ func CreateMoreMessagesFromTemplate(question string, chatHistory []*schema.Messa
 	if err != nil {
 		log.Fatalf("format template failed: %v\n", err)
 	}
+	logger.Debugf("messages: %v\n", messages)
 	return messages
 }

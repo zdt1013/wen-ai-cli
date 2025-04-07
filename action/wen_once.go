@@ -18,7 +18,7 @@ func NewWenOnceAction() cli.ActionFunc {
 		i18n := setup.GetI18n()
 		question := strings.Join(cmd.Args().Slice(), " ")
 		answerConfig := setup.GetConfig().AnswerConfig
-		messages := wenai.CreateOnceMessagesFromTemplate(question, answerConfig.EnableExplain, answerConfig.EnableExtendParams, answerConfig.EnablePlatformPerception)
+		messages := wenai.CreateOnceMessagesFromTemplate(question, answerConfig.EnableExplain, answerConfig.EnableExtendParams, answerConfig.EnablePlatformPerception, answerConfig.EnableWorkUserAndDir)
 		cm := wenai.CreateOpenAIChatModel(ctx)
 		streamResult := wenai.Stream(ctx, cm, messages)
 		_, hiddenParams, err := wenai.ReportStream(streamResult)

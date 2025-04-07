@@ -30,6 +30,7 @@ type AnswerConfig struct {
 	EnableExplain            bool `mapstructure:"enableExplain" json:"enableExplain"`
 	EnableExtendParams       bool `mapstructure:"enableExtendParams" json:"enableExtendParams"`
 	EnablePlatformPerception bool `mapstructure:"enablePlatformPerception" json:"enablePlatformPerception"`
+	EnableWorkUserAndDir     bool `mapstructure:"enableWorkUserAndDir" json:"enableWorkUserAndDir"`
 }
 
 type Config struct {
