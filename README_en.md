@@ -1,14 +1,14 @@
-# 🤖 Wen AI CLI -- Ask AI when you can't remember something.
+# 🤖 Wen AI CLI -- When you can't remember something, ask AI.
 
-Wen AI is a CLI tool specifically designed for server operations and personal host management. By integrating AI capabilities, it helps users quickly find and execute system commands, improving operational efficiency. It can intelligently parse user requirements and provide accurate command suggestions and execution solutions, making it a powerful assistant for operations personnel.
+Wen AI is a CLI tool designed specifically for server operations and personal host management. By integrating AI capabilities, it helps users quickly find and execute system commands, improving operational efficiency. It can intelligently parse user requirements and provide precise command suggestions and execution solutions, making it an invaluable assistant for operation engineers.
 
 ## ✨ Features
 
-- 🤖 Smart Dialogue: Supports natural language conversations with AI to quickly find application commands
-- 🔍 Smart Perception: Intelligently perceives the current working environment for more accurate AI responses
-- 🖥️ Cross-Platform Compatibility: Supports Linux, MacOS, Windows (arm, amd architectures) and other platforms
-- 🌍 Multi-language Support: Built-in internationalization support, providing multi-language interfaces (currently supports Chinese and English)
-- ⚙️ Configuration Management: Supports custom configurations, including API keys and other settings
+- 🤖 Intelligent Dialogue: Support natural language conversations with AI to quickly find and apply commands
+- 🔍 Smart Context Awareness: Intelligently perceives the current working environment for more accurate AI responses
+- 🖥️ Cross-Platform Compatibility: Supports Linux, MacOS, Windows (arm, amd architectures) platforms
+- 🌍 Multi-language Support: Built-in internationalization support, providing multi-language interface (currently supports Chinese and English)
+- ⚙️ Configuration Management: Supports custom configuration, including API key settings
 - 📝 Logging: Detailed logging for easy troubleshooting
 
 ## 📦 Installation
@@ -20,7 +20,35 @@ Wen AI is a CLI tool specifically designed for server operations and personal ho
 
 ### 📝 Installation Steps
 
-1. Clone the repository:
+#### Method 1. 📦 Binary Installation
+```bash
+# One-line installation
+# Install latest version
+curl https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install_en.sh | bash
+
+# Install with specific version and mirror
+curl https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install_en.sh | bash -s -- -v v0.1.0 -m ghproxy
+```
+```bash
+# Step-by-step installation
+# Download installation script
+curl -o install.sh https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh
+
+# Add execution permission
+chmod +x install.sh
+
+# Run installation script (installs latest version by default)
+sudo ./install.sh
+
+# Or install specific version
+sudo ./install.sh -v v0.1.0
+
+# Install using acceleration source (available options: ghproxy, wgetla)
+sudo ./install.sh -v v0.1.0 -m ghproxy
+```
+
+#### Method 2. 🚀 Local Compilation
+1. Clone repository:
 ```bash
 git clone https://github.com/zdt1013/wen-ai-cli.git
 cd wen-ai-cli
@@ -31,7 +59,7 @@ cd wen-ai-cli
 go mod download
 ```
 
-3. Build the project:
+3. Build project:
 ```bash
 go build
 ```
@@ -43,13 +71,13 @@ go build
 ### ⌨️ Basic Commands
 
 ```bash
-# Single-round question mode
+# Single question mode
 > wen + enter any question
 ```
 
 ![Wen AI Usage Example](docs/example1.png)
 
-### 💬 Start Chat Mode
+### 💬 Start Dialogue Mode
 ```bash
 > wen chat + enter first question
 or
@@ -66,9 +94,9 @@ or
 > wen --help
 ```
 
-### 🔧 Configuration Instructions
+### 🔧 Configuration
 
-Before using Wen AI, you need to configure necessary parameters such as API keys. You can configure them using the following commands:
+Before using Wen AI, you need to configure necessary parameters, such as API keys. You can configure through the following commands:
 
 ```bash
 > wen config --apiKey YOUR_API_KEY --baseUrl YOUR_API_BASE --model YOUR_API_MODEL
@@ -82,14 +110,14 @@ or
 wen-ai-cli/
 ├── action/     # Command action implementation
 ├── assets/     # Static resources
-│   └── lang/   # Language packages
+│   └── lang/   # Language packs
 ├── cmd/        # Command line definitions
 ├── docs/       # Documentation and attachments
 ├── common/     # Common components
 ├── execute/    # Executor
 ├── logger/     # Logging module
 ├── model/      # Data models
-├── setup/      # Initialization settings
+├── setup/      # Initialization setup
 ├── validate/   # Validator
 ├── wenai/      # Core functionality implementation
 ├── main.go     # Program entry
@@ -100,18 +128,18 @@ wen-ai-cli/
 ## ⚠️ Known Issues
   * Non-command line related question responses, reply style not yet optimized
 
-## 🔮 Future Plans 
- * Manual Mode: wen man
- * Perception: Detect host user, non-sudo user, intelligently adjust commands
- * Perception: Detect installed and uninstalled commands on the local machine
- * Toolchain (functioncall, mcp) support
+## 🔮 Future Plans
+ * Manual mode: wen man
+ * Awareness: Running host user, non-sudo user, intelligent command adjustment
+ * Awareness: Installed and uninstalled commands on local machine
+ * Tool chain (functioncall, mcp) support
  * Thinking model compatibility
  * User system for easy installation and use without manual AI parameter configuration
- * User knowledge base and usage preferences to save personal usage habits, making Wen AI understand you better
+ * User knowledge base and preferences for saving usage habits, making Wen AI understand you better
 
-## 📚 Dependencies
+## 📚 Dependencies on Open Source Projects
  * [urfave/cli](https://github.com/urfave/cli) - Command line application framework
- * [cloudwego/eino](https://github.com/cloudwego/eino) - ByteDance open source large language model (LLM) application development framework
+ * [cloudwego/eino](https://github.com/cloudwego/eino) - ByteDance's open-source Large Language Model (LLM) application development framework
  * [gookit/config](https://github.com/gookit/config) - Configuration management library
  * [gookit/i18n](https://github.com/gookit/i18n) - Internationalization support
  * [shirou/gopsutil](https://github.com/shirou/gopsutil) - System information collection
@@ -120,13 +148,13 @@ wen-ai-cli/
  * [go-cmd/cmd](https://github.com/go-cmd/cmd) - Command execution library
  * [manifoldco/promptui](https://github.com/manifoldco/promptui) - Interactive command line interface
 
-## 🤝 Contributing
+## 🤝 Contribution Guidelines
 
 Welcome to submit Issues and Pull Requests to help improve this project. Before submitting code, please ensure:
 
 1. Code complies with project coding standards
-2. Necessary tests are added
-3. Relevant documentation is updated
+2. Necessary tests have been added
+3. Related documentation has been updated
 
 ## 📄 License
 
@@ -134,6 +162,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-For any questions or suggestions, please contact us through:
+If you have any questions or suggestions, please contact through:
 
 - Submit an Issue
