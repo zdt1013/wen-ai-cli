@@ -19,7 +19,7 @@ var systemMessage = `{baseInfo}
 
 {answerDescription}
 
-{answer_format}`
+{answerFormat}`
 
 var baseInfo = `- 角色：命令行界面（CLI）专家和系统命令生成顾问。
 
@@ -79,7 +79,7 @@ func createTemplate() prompt.ChatTemplate {
 		schema.SystemMessage(systemMessage),
 
 		// 插入需要的对话历史（新对话的话这里不填）
-		schema.MessagesPlaceholder("chat_history", true),
+		schema.MessagesPlaceholder("chatHistory", true),
 
 		// 用户消息模板
 		schema.UserMessage("{question}"),
@@ -125,14 +125,14 @@ func CreateOnceMessagesFromTemplate(question string, enableExplain bool, enableE
 	template := createTemplate()
 	// 使用模板生成消息
 	messages, err := template.Format(context.Background(), map[string]any{
-		"base_info":          baseInfo,
-		"work_flow":          workFlow,
-		"work_platform":      getWorkPlatform(enablePlatformPerception),
-		"answer_description": answerDescription,
-		"answer_format":      getAnswerFormat(enableExplain, enableExtendParams),
-		"question":           question,
+		"baseInfo":          baseInfo,
+		"workFlow":          workFlow,
+		"workPlatform":      getWorkPlatform(enablePlatformPerception),
+		"answerDescription": answerDescription,
+		"answerFormat":      getAnswerFormat(enableExplain, enableExtendParams),
+		"question":          question,
 		// 对话历史
-		"chat_history": []*schema.Message{},
+		"chatHistory": []*schema.Message{},
 	})
 	if err != nil {
 		log.Fatalf("format template failed: %v\n", err)
@@ -144,14 +144,14 @@ func CreateMoreMessagesFromTemplate(question string, chatHistory []*schema.Messa
 	template := createTemplate()
 	// 使用模板生成消息
 	messages, err := template.Format(context.Background(), map[string]any{
-		"base_info":          baseInfo,
-		"work_flow":          workFlow,
-		"work_platform":      getWorkPlatform(enablePlatformPerception),
-		"answer_description": answerDescription,
-		"answer_format":      getAnswerFormat(enableExplain, enableExtendParams),
-		"question":           question,
+		"baseInfo":          baseInfo,
+		"workFlow":          workFlow,
+		"workPlatform":      getWorkPlatform(enablePlatformPerception),
+		"answerDescription": answerDescription,
+		"answerFormat":      getAnswerFormat(enableExplain, enableExtendParams),
+		"question":          question,
 		// 对话历史
-		"chat_history": chatHistory,
+		"chatHistory": chatHistory,
 	})
 	if err != nil {
 		log.Fatalf("format template failed: %v\n", err)
