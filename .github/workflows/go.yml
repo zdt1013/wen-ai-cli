@@ -55,6 +55,7 @@ jobs:
         GOOS: ${{ matrix.goos }}
         GOARCH: ${{ matrix.goarch }}
       run: |
+        mkdir -p bin
         output="wen-ai-cli${{ matrix.suffix}}"
         go build -ldflags "-s -w -X wen-ai-cli/setup.CliVersion=${{ env.VERSION }}" \
           --trimpath \
@@ -62,9 +63,17 @@ jobs:
           ./main.go
 
     - name: Package artifacts
+      env:
+        GOOS: ${{ matrix.goos }}
+        GOARCH: ${{ matrix.goarch }}
       run: |
         cd bin
+        output="wen-ai-cli${{ matrix.suffix}}"
         artifact_name="wen-ai-cli_${VERSION}_${GOOS}_${GOARCH}"
+        if [ ! -f "$output" ]; then
+          echo "Error: Binary file $output not found!"
+          exit 1
+        fi
         case ${{ matrix.archive }} in
           tar.gz)
             tar -czvf ../${artifact_name}.tar.gz $output
