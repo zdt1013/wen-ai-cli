@@ -1,4 +1,39 @@
+# Build output directories
+bin/
+dist/
 *.exe
-logs/*
-*.bin
-.git/
+
+# Go specific
+go.sum
+go/
+.cache/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Build and release artifacts
+releases/
+*.syso
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test files
+*.test
+*.out
+coverage.txt
+
+# Temporary files
+*.tmp
+*~
+*.bak
+*.log
