@@ -12,9 +12,9 @@
             "program": "${workspaceFolder}/main.go",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
-            // "args": ["curl下载文件到,并保存为指定文件名称"]
+            "args": ["curl下载文件到,并保存为指定文件名称"]
             // "args": ["chat","netcat测试指定端口是否开放"]
-            "args": ["chat"]
+            // "args": ["chat"]
             // "args": ["python查看已经安装的包列表信息"]
             // "args": ["config","-l","zh-CN"]
         }
