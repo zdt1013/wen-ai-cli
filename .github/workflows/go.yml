@@ -82,12 +82,16 @@ jobs:
             zip -r ../${artifact_name}.zip $output
             ;;
         esac
+        # 列出当前目录下的文件，用于调试
+        ls -la
+        # 列出上级目录下的文件，用于调试
+        ls -la ..
 
     - name: Upload release
       uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
-          *.tar.gz
-          *.zip
+          wen-ai-cli_${VERSION}_*.tar.gz
+          wen-ai-cli_${VERSION}_*.zip
         body: "Prebuilt binaries for ${{ env.VERSION }}"
