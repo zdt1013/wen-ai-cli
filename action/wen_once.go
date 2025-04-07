@@ -21,12 +21,12 @@ func NewWenOnceAction() cli.ActionFunc {
 		messages := wenai.CreateOnceMessagesFromTemplate(question, answerConfig.EnableExplain, answerConfig.EnableExtendParams, answerConfig.EnablePlatformPerception)
 		cm := wenai.CreateOpenAIChatModel(ctx)
 		streamResult := wenai.Stream(ctx, cm, messages)
-		_, hidden_params, err := wenai.ReportStream(streamResult)
+		_, hiddenParams, err := wenai.ReportStream(streamResult)
 		if err != nil {
 			logger.Errorf("ReportStream failed %v", err)
 		}
 		fmt.Println("--------------------------------")
-		if hidden_params.HasParameters() {
+		if hiddenParams.HasParameters() {
 			// 如果存在需要填充的参数，则提示用户，说明可以填充参数
 			result, err := execute.Prompt(i18n.SelectOperation, []string{i18n.FillParamsAndRun, i18n.AdjustAndRun, i18n.Exit})
 			if err != nil {
@@ -35,14 +35,14 @@ func NewWenOnceAction() cli.ActionFunc {
 			}
 			logger.Debugf(i18n.YourChoice, result)
 			if result == i18n.FillParamsAndRun {
-				shell_code, shouldExecute := common.HandleParamsCompletion(hidden_params)
+				shellCode, shouldExecute := common.HandleParamsCompletion(hiddenParams)
 				if shouldExecute {
-					execute.ExecuteScript(shell_code)
+					execute.ExecuteScript(shellCode)
 				} else {
 					return nil
 				}
 			} else if result == i18n.AdjustAndRun {
-				script, shouldExecute := common.HandleScriptAdjustment(hidden_params.ShellCode)
+				script, shouldExecute := common.HandleScriptAdjustment(hiddenParams.ShellCode)
 				if shouldExecute {
 					execute.ExecuteScript(script)
 				} else {
@@ -53,7 +53,7 @@ func NewWenOnceAction() cli.ActionFunc {
 				logger.Debug(i18n.Exit)
 			}
 		} else {
-			if hidden_params.ShellCode == "" {
+			if hiddenParams.ShellCode == "" {
 				// 如果脚本为空，则提示用户，说明无法解析答案
 				// 按照微调脚本进行处理
 				result, err := execute.Prompt(i18n.SelectOperation, []string{i18n.Exit})
@@ -73,9 +73,9 @@ func NewWenOnceAction() cli.ActionFunc {
 				}
 				logger.Debugf(i18n.YourChoice, result)
 				if result == i18n.RunNow {
-					execute.ExecuteScript(hidden_params.ShellCode)
+					execute.ExecuteScript(hiddenParams.ShellCode)
 				} else if result == i18n.AdjustAndRun {
-					script, shouldExecute := common.HandleScriptAdjustment(hidden_params.ShellCode)
+					script, shouldExecute := common.HandleScriptAdjustment(hiddenParams.ShellCode)
 					if shouldExecute {
 						execute.ExecuteScript(script)
 					}
