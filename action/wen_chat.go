@@ -7,12 +7,10 @@ import (
 	"wen-ai-cli/execute"
 	"wen-ai-cli/logger"
 	"wen-ai-cli/setup"
-	"wen-ai-cli/validate"
 
 	"wen-ai-cli/wenai"
 
 	"github.com/cloudwego/eino/schema"
-	"github.com/manifoldco/promptui"
 	"github.com/urfave/cli/v3"
 )
 
@@ -28,20 +26,7 @@ func NewWenChatAction() cli.ActionFunc {
 		question := strings.Join(cmd.Args().Slice(), " ")
 		questionTimes := 0
 		if question == "" {
-			// 定义输入验证函数
-			validateFn := func(input string) error {
-				return validate.ValidateParam(input, "string")
-			}
-
-			// 创建用户输入提示
-			prompt := promptui.Prompt{
-				Label:       i18n.UserInput,
-				Validate:    validateFn,
-				HideEntered: true,
-			}
-			// 获取用户输入
-			firstQuestion, err := prompt.Run()
-
+			firstQuestion, err := execute.InputString(i18n.UserInput)
 			if err != nil {
 				logger.Errorf("Prompt failed %v", err)
 				return nil
