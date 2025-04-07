@@ -22,29 +22,36 @@ Wen AI is a CLI tool designed specifically for server operations and personal ho
 
 #### Method 1. 📦 Binary Installation
 ```bash
-# One-line installation
-# Install latest version
-curl https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install_en.sh | bash
+# One-line installation (English version)
+# Install latest version by default
+curl -fSsL https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash
+# Install latest version with script acceleration
+curl -fSsL https://ghproxy.net/https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash
 
-# Install with specific version and mirror
-curl https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install_en.sh | bash -s -- -v v0.1.0 -m ghproxy
+# Install specific version with acceleration source
+curl -fSsL https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash -s -- -v v0.1.1 -m ghproxy
+# Install latest version with script acceleration
+curl -fSsL https://ghproxy.net/https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash -s -- -v v0.1.1 -m ghproxy
 ```
+
 ```bash
 # Step-by-step installation
 # Download installation script
 curl -o install.sh https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh
+# Download installation script with acceleration source
+curl -o install.sh https://ghproxy.net/https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh
 
 # Add execution permission
 chmod +x install.sh
 
-# Run installation script (installs latest version by default)
+# Run installation script (install latest version by default)
 sudo ./install.sh
 
 # Or install specific version
-sudo ./install.sh -v v0.1.0
+sudo ./install.sh -v v0.1.1
 
-# Install using acceleration source (available options: ghproxy, wgetla)
-sudo ./install.sh -v v0.1.0 -m ghproxy
+# Install with acceleration source (options: ghproxy, wgetla)
+sudo ./install.sh -v v0.1.1 -m ghproxy
 ```
 
 #### Method 2. 🚀 Local Compilation

@@ -24,15 +24,23 @@
 ```bash
 # 一行安装（中文版）
 # 默认安装最新版本
-curl https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash
+curl -fSsL https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash
+# 默认安装最新版本（脚本加速）
+curl -fSsL https://ghproxy.net/https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash
 
 # 指定版本和加速源安装
-curl https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash -s -- -v v0.1.0 -m ghproxy
+curl -fSsL https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash -s -- -v v0.1.1 -m ghproxy
+# 默认安装最新版本（脚本加速）
+curl -fSsL https://ghproxy.net/https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash -s -- -v v0.1.1 -m ghproxy
+
+
 ```
 ```bash
 # 分步骤安装
 # 下载安装脚本
 curl -o install.sh https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh
+# 下载安装脚本（脚本加速源）
+curl -o install.sh https://ghproxy.net/https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh
 
 # 添加执行权限
 chmod +x install.sh
@@ -41,10 +49,10 @@ chmod +x install.sh
 sudo ./install.sh
 
 # 或者指定版本安装
-sudo ./install.sh -v v0.1.0
+sudo ./install.sh -v v0.1.1
 
 # 使用加速源安装（可选值：ghproxy, wgetla）
-sudo ./install.sh -v v0.1.0 -m ghproxy
+sudo ./install.sh -v v0.1.1 -m ghproxy
 ```
 
 #### 方式2. 🚀 本地编译
