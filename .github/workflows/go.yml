@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - 'v*.*.*'  # 语义化版本标签触发
-    branches:
-      - main      # 主分支合并触发
 
 jobs:
   build:
@@ -60,7 +58,7 @@ jobs:
         output="wen-ai-cli${{ matrix.suffix}}"
         go build -ldflags "-X main.Version=${{ env.VERSION }}" \
           -o bin/$output \
-          ./cmd/cli  # 修改为实际入口路径‌:ml-citation{ref="5" data="citationList"}
+          ./main.go
 
     - name: Package artifacts
       run: |
