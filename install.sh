@@ -119,7 +119,7 @@ mkdir -p $(dirname $INSTALL_PATH)
 # 根据选择的加速源下载
 if [ "$MIRROR" == "default" ]; then
     echo "使用默认下载方式..."
-    curl -L -o $INSTALL_PATH $GITHUB_URL
+    curl -fSL -o $INSTALL_PATH $GITHUB_URL
     
     if [ $? -ne 0 ]; then
         echo "默认下载失败，尝试使用加速源..."
@@ -138,7 +138,7 @@ if [ "$MIRROR" == "default" ]; then
 else
     mirror_url="${MIRRORS[$MIRROR]}${GITHUB_URL}"
     echo "使用加速源 $MIRROR 下载: $mirror_url"
-    curl -L -o $INSTALL_PATH $mirror_url
+    curl -fSL -o $INSTALL_PATH $mirror_url
 fi
 
 if [ $? -ne 0 ]; then

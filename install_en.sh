@@ -119,7 +119,7 @@ mkdir -p $(dirname $INSTALL_PATH)
 # Download based on selected mirror
 if [ "$MIRROR" == "default" ]; then
     echo "Using default download method..."
-    curl -L -o $INSTALL_PATH $GITHUB_URL
+    curl -fSL -o $INSTALL_PATH $GITHUB_URL
     
     if [ $? -ne 0 ]; then
         echo "Default download failed, trying mirror sources..."
@@ -138,7 +138,7 @@ if [ "$MIRROR" == "default" ]; then
 else
     mirror_url="${MIRRORS[$MIRROR]}${GITHUB_URL}"
     echo "Using mirror $MIRROR for download: $mirror_url"
-    curl -L -o $INSTALL_PATH $mirror_url
+    curl -fSL -o $INSTALL_PATH $mirror_url
 fi
 
 if [ $? -ne 0 ]; then
