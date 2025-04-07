@@ -22,7 +22,7 @@
 
 1. 克隆仓库：
 ```bash
-git clone https://github.com/yourusername/wen-ai-cli.git
+git clone https://github.com/zdt1013/wen-ai-cli.git
 cd wen-ai-cli
 ```
 
@@ -53,17 +53,17 @@ go build
 ```bash
 > wen chat + 输入首轮问题
 或
-> wen chat 回车
-> 输入任意问题
+> wen chat <回车>
+  输入任意问题
 ```
 ![问AI使用示例](docs/example2.png)
 
 ### 🛠️ 其他命令
 ```bash
 # 查看配置
-wen config --help
+> wen config --help
 # 查看帮助信息
-wen --help
+> wen --help
 ```
 
 ### 🔧 配置说明
@@ -71,7 +71,9 @@ wen --help
 在使用问AI之前，你需要配置必要的参数，比如API密钥等。可以通过以下命令进行配置：
 
 ```bash
-wen config set api-key YOUR_API_KEY
+> wen config --apiKey YOUR_API_KEY --baseUrl YOUR_API_BASE --model YOUR_API_MODEL
+或
+> wen config -k YOUR_API_KEY -u YOUR_API_BASE -m YOUR_API_MODEL
 ```
 
 ## 📁 项目结构
@@ -82,6 +84,7 @@ wen-ai-cli/
 ├── assets/     # 静态资源
 │   └── lang/   # 多语言包
 ├── cmd/        # 命令行定义
+├── docs/       # 说明文档与附件
 ├── common/     # 公共组件
 ├── execute/    # 执行器
 ├── logger/     # 日志模块
