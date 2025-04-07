@@ -16,7 +16,7 @@
 				"-s -w -X wen-ai-cli/setup.CliVersion=v0.1.5",
 				"--trimpath",
 				"-o",
-				"wen",
+				"wen-linux-amd64",
 				"."
 			],
 			"problemMatcher": [
@@ -24,6 +24,31 @@
 			],
 			"group": "build",
 			"detail": "Build linux-amd64 binary"
+		},
+		{
+			"type": "go",
+			"label": "go: build linux-arm64",
+			"command": "build",
+			"options": {
+				"env": {
+					"GOOS": "linux",
+					"GOARCH": "arm64",
+					"CGO_ENABLED": "0"
+				}
+			},
+			"args": [
+				"-ldflags",
+				"-s -w -X wen-ai-cli/setup.CliVersion=v0.1.5",
+				"--trimpath",
+				"-o",
+				"wen-linux-arm64",
+				"."
+			],
+			"problemMatcher": [
+				"$go"
+			],
+			"group": "build",
+			"detail": "Build linux-arm64 binary"
 		},
 		{
 			"type": "go",
@@ -40,7 +65,7 @@
 				"-s -w -X wen-ai-cli/setup.CliVersion=v0.1.5",
 				"--trimpath",
 				"-o",
-				"wen.exe",
+				"wen-windows-amd64.exe",
 				"."
 			],
 			"problemMatcher": [
