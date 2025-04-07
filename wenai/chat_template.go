@@ -14,9 +14,9 @@ import (
 
 var systemMessage = `{baseInfo}
 
-{workPlatform}
-
 {workUserAndPwd}
+
+{workPlatform}
 
 {workFlow}
 
