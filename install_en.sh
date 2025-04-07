@@ -60,7 +60,7 @@ esac
 # If version is not specified, get the latest version
 if [ -z "$VERSION" ]; then
     echo "Getting latest version..."
-    VERSION=$(curl -s https://api.github.com/repos/zdt1013/wen-ai-cli/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')
+    VERSION=$(curl -s https://api.github.com/repos/zdt1013/wen-ai-cli/releases/latest | grep -o '"tag_name": "[^"]*"' | cut -d'"' -f4)
     
     if [ -z "$VERSION" ]; then
         echo "Unable to get latest version"

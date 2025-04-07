@@ -60,7 +60,7 @@ esac
 # 如果没有指定版本号，则获取最新版本
 if [ -z "$VERSION" ]; then
     echo "正在获取最新版本号..."
-    VERSION=$(curl -s https://api.github.com/repos/zdt1013/wen-ai-cli/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')
+    VERSION=$(curl -s https://api.github.com/repos/zdt1013/wen-ai-cli/releases/latest | grep -o '"tag_name": "[^"]*"' | cut -d'"' -f4)
     
     if [ -z "$VERSION" ]; then
         echo "无法获取最新版本号"
