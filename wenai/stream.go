@@ -32,9 +32,14 @@ func ReportStream(sr *schema.StreamReader[*schema.Message]) (*schema.Message, *m
 			// 移动正则解析代码到这里
 			re := regexp.MustCompile("(?s)```code(.*?)```")
 			fullContent := fullContentBuilder.String()
+			// 查找如果有多个代码块匹配，则认为最后一个代码块是shellCode
 			matches := re.FindAllStringSubmatch(fullContent, -1)
-			for _, match := range matches {
-				shellCode = strings.TrimSpace(match[1])
+			if len(matches) > 0 {
+				// 获取最后一个匹配的代码块
+				lastMatch := matches[len(matches)-1]
+				if len(lastMatch) > 1 {
+					shellCode = strings.TrimSpace(lastMatch[1])
+				}
 			}
 			if shellCode != "" {
 				result.ShellCode = shellCode
