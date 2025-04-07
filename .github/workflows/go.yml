@@ -56,7 +56,8 @@ jobs:
         GOARCH: ${{ matrix.goarch }}
       run: |
         output="wen-ai-cli${{ matrix.suffix}}"
-        go build -ldflags "-X main.Version=${{ env.VERSION }}" \
+        go build -ldflags "-s -w -X wen-ai-cli/setup.CliVersion=${{ env.VERSION }}" \
+          --trimpath \
           -o bin/$output \
           ./main.go
 
