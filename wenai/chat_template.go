@@ -2,6 +2,7 @@ package wenai
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"strings"
 	"wen-ai-cli/common"
@@ -35,16 +36,36 @@ var baseInfo = `- 角色：命令行界面（CLI）专家和系统命令生成�
 
 - 约束: 生成的命令应准确无误，符合目标系统和Shell工具的语法规范，说明应清晰易懂，适合不同技术水平的用户。`
 
-var workPlatform = `-> 目标系统信息：操作系统是“{systemInfo}”，命令行工具是“{shellPlatform}”`
+var workPlatform = `-> 目标系统信息：操作系统是"{systemInfo}"，命令行工具是"{shellPlatform}"`
 
-var workUserAndDir = `-> 当前用户是“{workUser}”，当前用户所在目录是“{workDir}”`
+var workUserAndDir = `-> 目标用户是："{workUser}"，目标用户工作目录是："{workDir}"`
 
-var workFlow = `- 工作流程:
-  1. 确认是否当前运行的用户和工作目录以及提供的当前运行环境（命令行工具和操作系统）。
-  2. 如果提供了用户信息（特别注意是否需要sudo）和工作目录、系统环境等信息，则根据用户的需求，回答适用于当前运行环境的最佳实践执行命令。
-  3. 如果没有提供相关用户、工作目录、系统环境等信息，则按照广泛通用的场景回答最佳实践执行命令。
-  4. 如果用户需求需要多个命令才能完成，请将多个命令使用当前平台支持的“多命令连接符号”连接，例如：opkg update && opkg install <包名称,string>
-  5. 按照指定格式，输出命令、命令分析和常用参数。`
+var workFlowSteps = []struct {
+	Step    string
+	Enable  bool
+	Default bool
+}{
+	{
+		Step:    "根据提供的目标用户信息、工作目录，判断是否需要使用sudo执行命令、是否需要添加当前工作目录路径，智能的在回答中调整脚本",
+		Enable:  true,
+		Default: true,
+	},
+	{
+		Step:    "根据提供目标系统环境等信息，按照用户需求，生成适配于当前系统环境的一个最佳实践命令脚本。",
+		Enable:  true,
+		Default: true,
+	},
+	{
+		Step:    "如果用户需求需要多个命令才能完成，请将多个命令使用当前平台支持的\"多命令连接符号\"连接，例如：opkg update && opkg install <包名称,string>",
+		Enable:  true,
+		Default: true,
+	},
+	{
+		Step:    "按照指定格式，输出命令、命令分析和常用参数。",
+		Enable:  true,
+		Default: true,
+	},
+}
 
 var answerDescription = `- 回答说明: 
 	1. 最佳脚本必须使用<code>和</code>包裹。	
@@ -143,12 +164,34 @@ func getWorkUserAndDir(enableWorkUserAndDir bool) string {
 	return workUserAndDir
 }
 
+func getWorkFlow(enablePlatformPerception bool, enableWorkUserAndDir bool) string {
+	// 重置所有步骤为默认状态
+	for i := range workFlowSteps {
+		workFlowSteps[i].Enable = workFlowSteps[i].Default
+	}
+
+	// 根据enable参数设置工作流程步骤的启用状态
+	if !enableWorkUserAndDir {
+		workFlowSteps[0].Enable = false
+	}
+	if !enablePlatformPerception {
+		workFlowSteps[1].Enable = false
+	}
+	var steps []string
+	for i, step := range workFlowSteps {
+		if step.Enable {
+			steps = append(steps, fmt.Sprintf("  %d. %s", i+1, step.Step))
+		}
+	}
+	return "- 工作流程:\n" + strings.Join(steps, "\n")
+}
+
 func CreateOnceMessagesFromTemplate(question string, enableExplain bool, enableExtendParams bool, enablePlatformPerception bool, enableWorkUserAndDir bool) []*schema.Message {
 	template := createTemplate()
 	// 使用模板生成消息
 	messages, err := template.Format(context.Background(), map[string]any{
 		"baseInfo":          baseInfo,
-		"workFlow":          workFlow,
+		"workFlow":          getWorkFlow(enablePlatformPerception, enableWorkUserAndDir),
 		"workPlatform":      getWorkPlatform(enablePlatformPerception),
 		"workUserAndPwd":    getWorkUserAndDir(enableWorkUserAndDir),
 		"answerDescription": answerDescription,
@@ -169,7 +212,7 @@ func CreateMoreMessagesFromTemplate(question string, chatHistory []*schema.Messa
 	// 使用模板生成消息
 	messages, err := template.Format(context.Background(), map[string]any{
 		"baseInfo":          baseInfo,
-		"workFlow":          workFlow,
+		"workFlow":          getWorkFlow(enablePlatformPerception, enableWorkUserAndDir),
 		"workPlatform":      getWorkPlatform(enablePlatformPerception),
 		"workUserAndPwd":    getWorkUserAndDir(enableWorkUserAndDir),
 		"answerDescription": answerDescription,
