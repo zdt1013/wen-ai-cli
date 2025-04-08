@@ -1,6 +1,10 @@
 # 🤖 Wen AI CLI -- When you can't remember something, ask AI.
 
 Wen AI is a CLI tool designed specifically for server operations and personal host management. By integrating AI capabilities, it helps users quickly find and execute system commands, improving operational efficiency. It can intelligently parse user requirements and provide precise command suggestions and execution solutions, making it an invaluable assistant for operation engineers.
+<div align="center">
+<!-- Language Switch Links -->
+[中文](./README.md) · **English** ·  [Report Bug][github-issues-link] · [Request Feature][github-issues-link]
+</div>
 
 ## ✨ Features
 
