@@ -76,24 +76,35 @@ go build
 
 ## 🚀 使用方法
 
-### ⌨️ 基本命令
+### ⌨️ 单轮提问模式
 
 ```bash
-# 单轮提问模式
-> wen + 输入任意问题
+# 基本格式
+> wen + [输入任意问题]
 ```
 
-![问AI使用示例](docs/example1.png)
+![单轮提问模式示例](docs/example1.png)
 
 ### 💬 启动对话模式
 ```bash
-> wen chat + 输入首轮问题
+# 基本格式
+> wen chat + [输入首轮问题]
 或
 > wen chat <回车>
-  输入任意问题
+  <输入任意问题>
 ```
-![问AI使用示例](docs/example2.png)
+![对话模式示例](docs/example2.png)
 
+### 📚 命令帮助手册模式（man模式）
+> 借助大模型，可以拜托原生`man`命令，实现更智能的命令手册查询。
+> 
+```bash
+# 基本格式
+> wen man -c curl [可选输入附加问题]
+# 示例
+> wen man -c curl "重点介绍下fSsL参数"
+```
+![man模式示例](docs/example3.png)
 ### 🛠️ 其他命令
 ```bash
 # 查看配置

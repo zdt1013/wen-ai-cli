@@ -75,23 +75,35 @@ go build
 
 ## 🚀 Usage
 
-### ⌨️ Basic Commands
+### ⌨️ Single Question Mode
 
 ```bash
-# Single question mode
-> wen + enter any question
+# Basic format
+> wen + [input any question]
 ```
 
-![Wen AI Usage Example](docs/example1.png)
+![Single Question Mode Example](docs/example1.png)
 
 ### 💬 Start Dialogue Mode
 ```bash
-> wen chat + enter first question
-or
+# Basic format
+> wen chat + [input first question]
+Or
 > wen chat <enter>
-  enter any question
+  <input any question>
 ```
-![Wen AI Usage Example](docs/example2.png)
+![Dialogue Mode Example](docs/example2.png)
+
+### 📚 Command Manual Mode (man mode)
+> Use large language model to help you with command manual queries.
+
+```bash
+# Basic format
+> wen man -c curl [optional additional question]
+# Example
+> wen man -c curl "focus on fSsL parameter"
+```
+![man mode example](docs/example3.png)
 
 ### 🛠️ Other Commands
 ```bash

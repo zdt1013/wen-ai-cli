@@ -62,7 +62,7 @@ release:
     
     See [CHANGELOG.md](CHANGELOG.md) for details.
   footer: |
-    **Full Changelog**: https://github.com/owner/repo/compare/{{ .PreviousTag }}...{{ .Tag }}
+    **Full Changelog**: https://github.com/zdt1013/wen-ai-cli/compare/{{ .PreviousTag }}...{{ .Tag }}
   extra_files:
     - glob: 'LICENSE*'
     - glob: 'README*'
