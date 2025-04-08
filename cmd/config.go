@@ -8,6 +8,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
+// NewConfigCmd 创建 config 命令
 func NewConfigCmd() *cli.Command {
 	return &cli.Command{
 		Name:    setup.ConfigCmd,
@@ -18,25 +19,25 @@ func NewConfigCmd() *cli.Command {
 				Name:    "lang",
 				Aliases: []string{"l"},
 				Value:   "zh-CN",
-				Usage:   i18n.DefTr("configLang"),
+				Usage:   i18n.Dtr("configLang"),
 			},
 			&cli.StringFlag{
 				Name:    "apiKey",
 				Aliases: []string{"k"},
 				Value:   "",
-				Usage:   i18n.DefTr("configAk"),
+				Usage:   i18n.Dtr("configAk"),
 			},
 			&cli.StringFlag{
 				Name:    "baseURL",
 				Aliases: []string{"u"},
 				Value:   "",
-				Usage:   i18n.DefTr("configBaseURL"),
+				Usage:   i18n.Dtr("configBaseURL"),
 			},
 			&cli.StringFlag{
 				Name:    "model",
 				Aliases: []string{"m"},
 				Value:   "",
-				Usage:   i18n.DefTr("configModel"),
+				Usage:   i18n.Dtr("configModel"),
 			},
 		},
 		Action: action.NewConfigAction(),

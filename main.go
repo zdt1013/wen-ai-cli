@@ -39,6 +39,7 @@ func main() {
 		Commands: []*cli.Command{
 			cmd.NewChatCmd(),
 			cmd.NewConfigCmd(),
+			cmd.NewManualCmd(),
 		},
 	}
 	// 运行命令

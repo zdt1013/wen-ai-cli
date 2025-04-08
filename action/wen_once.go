@@ -9,16 +9,18 @@ import (
 	"wen-ai-cli/logger"
 	"wen-ai-cli/setup"
 	"wen-ai-cli/wenai"
+	"wen-ai-cli/wenai/chat"
 
 	"github.com/urfave/cli/v3"
 )
 
+// NewWenOnceAction 创建 wen once action执行
 func NewWenOnceAction() cli.ActionFunc {
 	return func(ctx context.Context, cmd *cli.Command) error {
 		i18n := setup.GetI18n()
 		question := strings.Join(cmd.Args().Slice(), " ")
 		answerConfig := setup.GetConfig().AnswerConfig
-		messages := wenai.CreateOnceMessagesFromTemplate(question, answerConfig.EnableExplain, answerConfig.EnableExtendParams, answerConfig.EnablePlatformPerception, answerConfig.EnableWorkUserAndDir)
+		messages := chat.CreateOnceMessagesFromTemplate(question, answerConfig.EnableExplain, answerConfig.EnableExtendParams, answerConfig.EnablePlatformPerception, answerConfig.EnableWorkUserAndDir)
 		cm := wenai.CreateOpenAIChatModel(ctx)
 		streamResult := wenai.Stream(ctx, cm, messages)
 		_, hiddenParams, err := wenai.ReportStream(streamResult)

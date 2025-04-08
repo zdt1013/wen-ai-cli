@@ -6,4 +6,5 @@ const (
 	ConfigCmd      = "config"
 	ConfigCmdAlias = "c"
 	ChatCmd        = "chat"
+	ManualCmd      = "man"
 )

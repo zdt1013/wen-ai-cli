@@ -7,6 +7,7 @@ import (
 	"wen-ai-cli/execute"
 	"wen-ai-cli/logger"
 	"wen-ai-cli/setup"
+	"wen-ai-cli/wenai/chat"
 
 	"wen-ai-cli/wenai"
 
@@ -14,6 +15,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
+// NewWenChatAction 创建 chat action执行
 func NewWenChatAction() cli.ActionFunc {
 	return func(ctx context.Context, cmd *cli.Command) error {
 		// 获取配置信息
@@ -44,7 +46,7 @@ func NewWenChatAction() cli.ActionFunc {
 			execute.PrintQuestionTimes(question, questionTimes)
 			// 创建聊天消息模板
 
-			messages := wenai.CreateMoreMessagesFromTemplate(question, chatHistory, answerConfig.EnableExplain, answerConfig.EnableExtendParams, answerConfig.EnablePlatformPerception, answerConfig.EnableWorkUserAndDir)
+			messages := chat.CreateMoreMessagesFromTemplate(question, chatHistory, answerConfig.EnableExplain, answerConfig.EnableExtendParams, answerConfig.EnablePlatformPerception, answerConfig.EnableWorkUserAndDir)
 			// 创建OpenAI聊天模型
 			cm := wenai.CreateOpenAIChatModel(ctx)
 			// 获取流式处理结果

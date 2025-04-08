@@ -8,6 +8,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
+// NewConfigAction 创建 config action执行
 func NewConfigAction() cli.ActionFunc {
 	return func(ctx context.Context, cmd *cli.Command) error {
 		cfg := setup.GetConfig()

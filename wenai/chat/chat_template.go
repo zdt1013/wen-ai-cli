@@ -1,4 +1,4 @@
-package wenai
+package chat
 
 import (
 	"context"
