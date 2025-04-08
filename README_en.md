@@ -5,6 +5,7 @@ Wen AI is a CLI tool designed specifically for server operations and personal ho
 ## ✨ Features
 
 - 🤖 Intelligent Dialogue: Support natural language conversations with AI to quickly find and apply commands
+- 📚 Command Manual Mode: `wen man`，use large language model to help you with command manual queries.
 - 🔍 Smart Context Awareness: Intelligently perceives the current working environment for more accurate AI responses
 - 🖥️ Cross-Platform Compatibility: Supports Linux, MacOS, Windows (arm, amd architectures) platforms
 - 🌍 Multi-language Support: Built-in internationalization support, providing multi-language interface (currently supports Chinese and English)
@@ -148,7 +149,6 @@ wen-ai-cli/
   * Non-command line related question responses, reply style not yet optimized
 
 ## 🔮 Future Plans
- * Manual mode: wen man
  * Awareness: Running host user, non-sudo user, intelligent command adjustment
  * Awareness: Installed and uninstalled commands on local machine
  * Tool chain (functioncall, mcp) support
