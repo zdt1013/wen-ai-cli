@@ -178,25 +178,3 @@ func CreateOnceMessagesFromTemplate(cmdName, question string, enableExplain bool
 	logger.Debugf("messages: %v\n", messages)
 	return messages
 }
-
-func CreateMoreMessagesFromTemplate(cmdName, question string, chatHistory []*schema.Message, enableExplain bool, enableExtendParams bool, enablePlatformPerception bool, enableWorkUserAndDir bool) []*schema.Message {
-	template := createTemplate()
-	// 使用模板生成消息
-	messages, err := template.Format(context.Background(), map[string]any{
-		"baseInfo":          baseInfo,
-		"workFlow":          getWorkFlow(enablePlatformPerception, enableWorkUserAndDir),
-		"workPlatform":      getWorkPlatform(enablePlatformPerception),
-		"workUserAndDir":    getWorkUserAndDir(enableWorkUserAndDir),
-		"answerDescription": answerDescription,
-		"answerFormat":      answerFormat,
-		"cmdName":           cmdName,
-		"question":          question,
-		// 对话历史
-		"chatHistory": chatHistory,
-	})
-	if err != nil {
-		log.Fatalf("format template failed: %v\n", err)
-	}
-	logger.Debugf("messages: %v\n", messages)
-	return messages
-}
