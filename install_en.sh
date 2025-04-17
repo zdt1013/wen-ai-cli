@@ -10,6 +10,19 @@ show_help() {
     exit 0
 }
 
+# Check user permissions and execute command
+check_and_execute() {
+    local cmd="$1"
+    if [ -w "/usr/bin" ]; then
+        # User has write permission, execute directly
+        eval "$cmd"
+    else
+        # User doesn't have write permission, use sudo
+        echo "Sudo permission required to install to /usr/bin directory"
+        sudo $cmd
+    fi
+}
+
 # Get system information
 case "$(uname -s)" in
     Linux*)
@@ -17,9 +30,6 @@ case "$(uname -s)" in
         ;;
     Darwin*)
         OS="darwin"
-        ;;
-    MINGW64*|MSYS*|CYGWIN*)
-        OS="windows"
         ;;
     *)
         echo "Unsupported operating system: $(uname -s)"
@@ -47,10 +57,6 @@ case $OS in
         EXT=""
         INSTALL_PATH="/usr/bin/wen"
         ;;
-    windows)
-        EXT=".exe"
-        INSTALL_PATH="/usr/bin/wen.exe"
-        ;;
     *)
         echo "Unsupported operating system: $OS"
         exit 1
@@ -73,7 +79,8 @@ fi
 
 # Define mirror domain list
 declare -A MIRRORS=(
-    ["ghproxy"]="https://ghproxy.imciel.com/"
+    ["ghproxy"]="https://ghproxy.net/"
+    ["ghproxy2"]="https://ghproxy.imciel.com/"
     ["wgetla"]="https://wget.la/"
     ["default"]=""
 )
@@ -114,12 +121,12 @@ VERSION=${VERSION#v}
 GITHUB_URL="https://github.com/zdt1013/wen-ai-cli/releases/download/${RELEASE_VERSION}/wen-ai-cli_${VERSION}_${OS}_${ARCH}${EXT}"
 
 # Ensure target directory exists
-mkdir -p $(dirname $INSTALL_PATH)
+check_and_execute "mkdir -p $(dirname $INSTALL_PATH)"
 
 # Download based on selected mirror
 if [ "$MIRROR" == "default" ]; then
     echo "Using default download method..."
-    curl -fSL -o $INSTALL_PATH $GITHUB_URL
+    check_and_execute "curl -fSL -o $INSTALL_PATH $GITHUB_URL"
     
     if [ $? -ne 0 ]; then
         echo "Default download failed, trying mirror sources..."
@@ -127,7 +134,7 @@ if [ "$MIRROR" == "default" ]; then
             if [ "$mirror_name" != "default" ]; then
                 mirror_url="${MIRRORS[$mirror_name]}${GITHUB_URL}"
                 echo "Trying mirror source: $mirror_name ($mirror_url)"
-                curl -L -o $INSTALL_PATH $mirror_url
+                check_and_execute "curl -L -o $INSTALL_PATH $mirror_url"
                 if [ $? -eq 0 ]; then
                     echo "Download successful using mirror $mirror_name"
                     break
@@ -138,7 +145,7 @@ if [ "$MIRROR" == "default" ]; then
 else
     mirror_url="${MIRRORS[$MIRROR]}${GITHUB_URL}"
     echo "Using mirror $MIRROR for download: $mirror_url"
-    curl -fSL -o $INSTALL_PATH $mirror_url
+    check_and_execute "curl -fSL -o $INSTALL_PATH $mirror_url"
 fi
 
 if [ $? -ne 0 ]; then
@@ -147,7 +154,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Set execution permissions
-chmod +x $INSTALL_PATH
+check_and_execute "chmod +x $INSTALL_PATH"
 
 echo "Installation complete!"
 echo "wen-ai-cli has been installed to $INSTALL_PATH" 

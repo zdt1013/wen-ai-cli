@@ -10,6 +10,19 @@ show_help() {
     exit 0
 }
 
+# 检查用户权限并执行命令
+check_and_execute() {
+    local cmd="$1"
+    if [ -w "/usr/bin" ]; then
+        # 用户有写入权限，直接执行
+        eval "$cmd"
+    else
+        # 用户没有写入权限，使用sudo
+        echo "需要sudo权限来安装到 /usr/bin 目录"
+        sudo $cmd
+    fi
+}
+
 # 获取系统信息
 case "$(uname -s)" in
     Linux*)
@@ -17,9 +30,6 @@ case "$(uname -s)" in
         ;;
     Darwin*)
         OS="darwin"
-        ;;
-    MINGW64*|MSYS*|CYGWIN*)
-        OS="windows"
         ;;
     *)
         echo "不支持的操作系统: $(uname -s)"
@@ -47,10 +57,6 @@ case $OS in
         EXT=""
         INSTALL_PATH="/usr/bin/wen"
         ;;
-    windows)
-        EXT=".exe"
-        INSTALL_PATH="/usr/bin/wen.exe"
-        ;;
     *)
         echo "不支持的操作系统: $OS"
         exit 1
@@ -73,7 +79,8 @@ fi
 
 # 定义加速域名列表
 declare -A MIRRORS=(
-    ["ghproxy"]="https://ghproxy.imciel.com/"
+    ["ghproxy"]="https://ghproxy.net/"
+    ["ghproxy2"]="https://ghproxy.imciel.com/"
     ["wgetla"]="https://wget.la/"
     ["default"]=""
 )
@@ -114,12 +121,12 @@ VERSION=${VERSION#v}
 GITHUB_URL="https://github.com/zdt1013/wen-ai-cli/releases/download/${RELEASE_VERSION}/wen-ai-cli_${VERSION}_${OS}_${ARCH}${EXT}"
 
 # 确保目标目录存在
-mkdir -p $(dirname $INSTALL_PATH)
+check_and_execute "mkdir -p $(dirname $INSTALL_PATH)"
 
 # 根据选择的加速源下载
 if [ "$MIRROR" == "default" ]; then
     echo "使用默认下载方式..."
-    curl -fSL -o $INSTALL_PATH $GITHUB_URL
+    check_and_execute "curl -fSL -o $INSTALL_PATH $GITHUB_URL"
     
     if [ $? -ne 0 ]; then
         echo "默认下载失败，尝试使用加速源..."
@@ -127,7 +134,7 @@ if [ "$MIRROR" == "default" ]; then
             if [ "$mirror_name" != "default" ]; then
                 mirror_url="${MIRRORS[$mirror_name]}${GITHUB_URL}"
                 echo "尝试使用加速源: $mirror_name ($mirror_url)"
-                curl -L -o $INSTALL_PATH $mirror_url
+                check_and_execute "curl -L -o $INSTALL_PATH $mirror_url"
                 if [ $? -eq 0 ]; then
                     echo "使用加速源 $mirror_name 下载成功"
                     break
@@ -138,7 +145,7 @@ if [ "$MIRROR" == "default" ]; then
 else
     mirror_url="${MIRRORS[$MIRROR]}${GITHUB_URL}"
     echo "使用加速源 $MIRROR 下载: $mirror_url"
-    curl -fSL -o $INSTALL_PATH $mirror_url
+    check_and_execute "curl -fSL -o $INSTALL_PATH $mirror_url"
 fi
 
 if [ $? -ne 0 ]; then
@@ -147,7 +154,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # 设置执行权限
-chmod +x $INSTALL_PATH
+check_and_execute "chmod +x $INSTALL_PATH"
 
 echo "安装完成！"
 echo "wen-ai-cli 已安装到 $INSTALL_PATH"
