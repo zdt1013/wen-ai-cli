@@ -2,9 +2,7 @@
 
 问AI (Wen AI) CLI是一个专为服务器运维和个人主机管理设计的CLI工具，通过集成AI能力，帮助用户快速查找和执行系统命令，提升运维效率。它能够智能解析用户需求，提供精准的命令建议和执行方案，是运维人员的得力助手。
 
-<div align="center">
 **中文** · [English](./README_en.md) ·  [报告问题][github-issues-link] · [请求功能][github-issues-link]
-</div>
 
 ## ✨ 功能特性
 
