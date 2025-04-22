@@ -128,7 +128,7 @@ jobs:
       # 在 Run GoReleaser 之前添加配置检查步骤
       - name: Check GoReleaser config
         run: |
-          if [ ! -f ".goreleaser.yml" ] && [ ! -f ".goreleaser.yaml" ]; then
+          if [ ! -f ".github/.goreleaser.yml" ] && [ ! -f ".github/.goreleaser.yaml" ]; then
             echo "::error::GoReleaser configuration file not found"
             exit 1
           fi
