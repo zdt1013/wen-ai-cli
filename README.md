@@ -34,7 +34,7 @@ curl -fSsL https://ghproxy.net/https://raw.githubusercontent.com/zdt1013/wen-ai-
 # 指定版本和加速源安装
 curl -fSsL https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash -s -- -v v0.1.1 -m ghproxy
 # 默认安装最新版本（脚本加速）
-curl -fSsL https://ghproxy.net/https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash -s -- -v v0.1.1 -m ghproxy
+curl -fSsL https://ghproxy.net/https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash -s -- -m ghproxy
 
 
 ```

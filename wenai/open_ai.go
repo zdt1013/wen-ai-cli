@@ -9,7 +9,7 @@ import (
 	"github.com/gookit/config/v2"
 )
 
-func CreateOpenAIChatModel(ctx context.Context) model.ChatModel {
+func CreateOpenAIChatModel(ctx context.Context) model.BaseChatModel {
 	apiKey := config.String("openai.apiKey")
 	baseURL := config.String("openai.baseURL")
 	modelName := config.String("openai.model")

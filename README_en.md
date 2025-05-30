@@ -34,7 +34,7 @@ curl -fSsL https://ghproxy.net/https://raw.githubusercontent.com/zdt1013/wen-ai-
 # Install specific version with acceleration source
 curl -fSsL https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash -s -- -v v0.1.1 -m ghproxy
 # Install latest version with script acceleration
-curl -fSsL https://ghproxy.net/https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash -s -- -v v0.1.1 -m ghproxy
+curl -fSsL https://ghproxy.net/https://raw.githubusercontent.com/zdt1013/wen-ai-cli/main/install.sh | bash -s -- -m ghproxy
 ```
 
 ```bash
