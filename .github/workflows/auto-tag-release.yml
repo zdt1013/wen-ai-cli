@@ -125,13 +125,6 @@ jobs:
           git tag -a $new_tag -m "Release $new_tag"
           git push origin $new_tag
 
-      # 在 Run GoReleaser 之前添加配置检查步骤
-      - name: Check GoReleaser config
-        run: |
-          if [ ! -f ".goreleaser.yml" ] && [ ! -f ".goreleaser.yaml" ]; then
-            echo "::error::GoReleaser configuration file not found"
-            exit 1
-          fi
 
       # 添加依赖检查步骤
       - name: Check Dependencies
@@ -163,7 +156,7 @@ jobs:
       # 修改 GoReleaser 步骤
       - name: Run GoReleaser
         if: ${{ startsWith(github.ref, 'refs/tags/v') || (success() && steps.get_latest_tag.outputs.version != '') }}
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
           version: latest
@@ -206,10 +199,6 @@ jobs:
         run: |
           echo "::group::GoReleaser Debug Info"
           cat dist/artifacts.json || true
-          echo "::endgroup::"
-
-          echo "::group::GoReleaser Config"
-          cat .goreleaser.yml
           echo "::endgroup::"
 
           echo "::group::Environment Info"
