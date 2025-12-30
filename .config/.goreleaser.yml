@@ -21,8 +21,6 @@ builds:
     goarch:
       - amd64
       - arm64
-<<<<<<< HEAD
-=======
     ignore:
       - goos: darwin
         goarch: "386"
@@ -30,7 +28,6 @@ builds:
         goarch: "386"
       - goos: windows
         goarch: "386"
->>>>>>> dev
     ldflags:
       - -s -w
       - -X 'wen-ai-cli/setup.CliVersion={{.Version}}'
