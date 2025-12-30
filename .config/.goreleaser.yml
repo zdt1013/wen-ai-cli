@@ -1,3 +1,4 @@
+project_name: wen-ai-cli
 version: 2
 
 before:
@@ -24,6 +25,8 @@ builds:
       - goos: darwin
         goarch: "386"
       - goos: linux
+        goarch: "386"
+      - goos: windows
         goarch: "386"
     ldflags:
       - -s -w
@@ -89,5 +92,3 @@ changelog:
       order: 1
     - title: Others
       order: 999
-
-project_name: wen-ai-cli
