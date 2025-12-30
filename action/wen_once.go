@@ -36,14 +36,15 @@ func NewWenOnceAction() cli.ActionFunc {
 				return nil
 			}
 			logger.Debugf(i18n.YourChoice, result)
-			if result == i18n.FillParamsAndRun {
+			switch result {
+			case i18n.FillParamsAndRun:
 				shellCode, shouldExecute := common.HandleParamsCompletion(hiddenParams)
 				if shouldExecute {
 					execute.ExecuteScript(shellCode)
 				} else {
 					return nil
 				}
-			} else if result == i18n.AdjustAndRun {
+			case i18n.AdjustAndRun:
 				script, shouldExecute := common.HandleScriptAdjustment(hiddenParams.ShellCode)
 				if shouldExecute {
 					execute.ExecuteScript(script)
@@ -51,7 +52,7 @@ func NewWenOnceAction() cli.ActionFunc {
 					return nil
 				}
 
-			} else {
+			default:
 				logger.Debug(i18n.Exit)
 			}
 		} else {
@@ -74,14 +75,15 @@ func NewWenOnceAction() cli.ActionFunc {
 					return nil
 				}
 				logger.Debugf(i18n.YourChoice, result)
-				if result == i18n.RunNow {
+				switch result {
+				case i18n.RunNow:
 					execute.ExecuteScript(hiddenParams.ShellCode)
-				} else if result == i18n.AdjustAndRun {
+				case i18n.AdjustAndRun:
 					script, shouldExecute := common.HandleScriptAdjustment(hiddenParams.ShellCode)
 					if shouldExecute {
 						execute.ExecuteScript(script)
 					}
-				} else {
+				default:
 					logger.Debug(i18n.Exit)
 				}
 			}

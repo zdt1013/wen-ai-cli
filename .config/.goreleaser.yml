@@ -1,3 +1,4 @@
+project_name: wen-ai-cli
 version: 2
 
 before:
@@ -20,6 +21,16 @@ builds:
     goarch:
       - amd64
       - arm64
+<<<<<<< HEAD
+=======
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      - goos: linux
+        goarch: "386"
+      - goos: windows
+        goarch: "386"
+>>>>>>> dev
     ldflags:
       - -s -w
       - -X 'wen-ai-cli/setup.CliVersion={{.Version}}'
@@ -84,5 +95,3 @@ changelog:
       order: 1
     - title: Others
       order: 999
-
-project_name: wen-ai-cli
