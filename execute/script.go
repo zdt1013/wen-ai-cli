@@ -1,11 +1,12 @@
 package execute
 
 import (
+	"context"
 	"os"
+	"os/exec"
 	"time"
 	"wen-ai-cli/logger"
 
-	"github.com/go-cmd/cmd"
 	"github.com/gookit/i18n"
 )
 
@@ -25,16 +26,6 @@ func DefaultOptions() ExecuteOptions {
 	}
 }
 
-// 输出命令执行状态
-func printCommandStatus(status cmd.Status) {
-	for _, line := range status.Stdout {
-		logger.Info(line)
-	}
-	for _, line := range status.Stderr {
-		logger.Error(line)
-	}
-}
-
 // 获取系统对应的Shell
 func getSystemShell() (string, string) {
 	shellName := "bash"
@@ -51,54 +42,49 @@ func ExecuteScriptWithOptions(shellCode string, options ExecuteOptions) (int, er
 	// 根据操作系统选择合适的shell
 	shellName, shellArg := getSystemShell()
 
-	// 创建cmd实例
-	command := cmd.NewCmd(shellName, shellArg, shellCode)
+	// 创建命令实例
+	cmdObj := exec.Command(shellName, shellArg, shellCode)
+
+	// 如果需要显示输出，直接连接到终端（保持原文格式）
+	if options.ShowOutput {
+		cmdObj.Stdout = os.Stdout
+		cmdObj.Stderr = os.Stderr
+	}
 
 	// 配置超时
+	var ctx context.Context
+	var cancel context.CancelFunc
 	if options.Timeout > 0 {
-		go func() {
-			<-time.After(options.Timeout)
-			command.Stop()
-		}()
+		ctx, cancel = context.WithTimeout(context.Background(), options.Timeout)
+		defer cancel()
+		cmdObj = exec.CommandContext(ctx, shellName, shellArg, shellCode)
+
+		// 重新设置输出（CommandContext 会创建新实例）
+		if options.ShowOutput {
+			cmdObj.Stdout = os.Stdout
+			cmdObj.Stderr = os.Stderr
+		}
 	}
 
-	// 启动命令
-	statusChan := command.Start()
+	// 执行命令（输出会自动流式打印到终端）
+	err := cmdObj.Run()
 
-	// 如果需要显示输出，则启动输出刷新协程
-	var ticker *time.Ticker
-	if options.ShowOutput {
-		ticker = time.NewTicker(options.RefreshRate)
-		go func() {
-			for range ticker.C {
-				status := command.Status()
-				printCommandStatus(status)
-			}
-		}()
+	// 获取退出码
+	exitCode := 0
+	if err != nil {
+		// 尝试从 exit error 获取退出码
+		if exitError, ok := err.(*exec.ExitError); ok {
+			exitCode = exitError.ExitCode()
+		} else {
+			// 其他错误（如命令未找到）
+			logger.Errorf("命令执行出错: %v", err)
+			return -1, err
+		}
 	}
 
-	// 等待命令执行完成
-	finalStatus := <-statusChan
+	logger.Debugf("命令执行完成，退出码: %d", exitCode)
 
-	// 停止输出刷新
-	if ticker != nil {
-		ticker.Stop()
-	}
-
-	// 打印命令执行结果
-	if finalStatus.Error != nil {
-		logger.Errorf("命令执行出错: %v", finalStatus.Error)
-		return finalStatus.Exit, finalStatus.Error
-	}
-
-	logger.Debugf("命令执行完成，退出码: %d", finalStatus.Exit)
-
-	// 确保输出所有内容
-	if options.ShowOutput {
-		printCommandStatus(finalStatus)
-	}
-
-	return finalStatus.Exit, nil
+	return exitCode, nil
 }
 
 // ExecuteScript 使用默认选项执行shell脚本
